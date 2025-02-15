@@ -12,3 +12,16 @@ def login(request):
 
 def homepage(request):
     return render (request,'homepage.html')
+
+def recommand(request):
+    return render (request,'recommand.html')
+
+def about(request):
+    return render (request,'about.html')
+
+def contact(request):
+    return render (request,'contact.html')
+
+
+def movies(request):
+    return render (request,'movies.html')

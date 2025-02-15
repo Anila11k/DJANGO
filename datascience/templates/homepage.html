@@ -1,11 +1,17 @@
-<!DOCTYPE html>
+
+
+
+
+
+
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <style>
-        body {
+        body {  
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -45,17 +51,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .content h1 {
-            font-size: 36px;
-            color: #333;
-        }
-
-        .content p {
-            font-size: 18px;
-            margin-top: 20px;
-            color: #666;
-        }
-
         .section {
             margin: 40px 0;
             text-align: center;
@@ -67,27 +62,55 @@
             margin-bottom: 15px;
         }
 
-        .section p {
-            font-size: 18px;
-            color: #666;
-        }
+        
 
-        .section a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            margin-top: 10px;
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #f1f1f1;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
 
-        .section a:hover {
-            background-color: #ddd;
-        }
+        .movies-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .movies-container img {
+        width: 200px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .movies-container img:hover {
+        transform: scale(1.05);
+    }
+    
+    
+    
+
+
+    .movies-container button {
+    display: block;
+    margin: 30px auto;
+    background: linear-gradient(135deg, #ff7f50, #ff6347);
+    color: white;
+    font-size: 1.2rem;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.movies-container button:hover {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+
 
         .footer {
             background-color: #333;
@@ -97,22 +120,6 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-        }
-
-        /* Mobile responsiveness */
-        @media screen and (max-width: 768px) {
-            header nav a {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-
-            .content h1 {
-                font-size: 28px;
-            }
-
-            .section h2 {
-                font-size: 24px;
-            }
         }
     </style>
 </head>
@@ -124,6 +131,7 @@
             <a href="#register">Register</a>
             <a href="#about">About</a>
             <a href="#contact">Contact Us</a>
+            <a href="#movies">Movies</a>
         </nav>
     </header>
 
@@ -132,29 +140,19 @@
         <p>We provide a variety of services. Choose an option from the menu above to learn more!</p>
     </div>
 
-    <div id="login" class="section">
-        <h2>Login</h2>
-        <p>Already have an account? Log in here.</p>
-        <a href="login.html">Go to Login Page</a>
-    </div>
 
-    <div id="register" class="section">
-        <h2>Register</h2>
-        <p>Don't have an account? Sign up now!</p>
-        <a href="register.html">Go to Register Page</a>
-    </div>
+    <div id="movies" class="section">
+        <h2>Latest Movies</h2>
+        <div class="movies-container">
+            <img src="movie1.jpg" alt="Movie 1">
+            <img src="movie2.jpg" alt="Movie 2">
+            <img src="movie3.jpg" alt="Movie 3">
+            <img src="movie4.jpg" alt="Movie 4">
+        </div class='button'>
+         <a href="{% url 'movies' %}"><button>View Now</button></a>
+        </div>
 
-    <div id="about" class="section">
-        <h2>About Us</h2>
-        <p>We are a team dedicated to providing quality service and support to our users. Our goal is to make your experience as easy and enjoyable as possible.</p>
-    </div>
-
-    <div id="contact" class="section">
-        <h2>Contact Us</h2>
-        <p>Have questions? Get in touch with us!</p>
-        <p>Email: <strong>support@website.com</strong></p>
-        <p>Phone: <strong>123-456-7890</strong></p>
-    </div>
+    
 
     <div class="footer">
         <p>&copy; 2025 Our Website. All rights reserved.</p>
