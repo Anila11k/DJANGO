@@ -61,7 +61,15 @@
 <body>
     <div class="register-container">
         <h2>Register</h2>
-        <form action="#" method="post">
+        {% if messages %}
+            {% for message in messages %}
+            <p style="color: red;">{{message}}</p>
+            {% endfor %}
+        {% endif %}    
+
+
+        <form  method="post">
+            {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
@@ -69,7 +77,7 @@
             <button type="submit">Register</button>
         </form>
         <div class="footer">
-            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            <p>Already have an account? <a href="{% url 'login_view' %}">Login here</a></p>
         </div>
     </div>
 </body>
