@@ -1,209 +1,122 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Recommendation</title>
+    <title>Movie Recommendations</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg,rgb(71, 7, 7),rgb(70, 7, 25));
+            text-align: center;
             margin: 0;
             padding: 0;
         }
-
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .search-container input {
-            padding: 12px;
+        .container {
             width: 80%;
-            max-width: 600px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
         }
-
-        .search-container button {
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-container button:hover {
-            background-color: #45a049;
-        }
-
-        .recommendations {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 40px;
-            padding: 0 20px;
-        }
-
         .movie-card {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 200px;
+            display: inline-block;
+            width: 100px;
             margin: 15px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .movie-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
         }
-
         .movie-card img {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
+            height: auto;
+            border-radius: 8px;
         }
-
-        .movie-card h3 {
-            font-size: 18px;
-            color: #333;
-            margin: 15px 0 10px;
+        .search-box {
+            margin-bottom: 20px;
         }
-
-        .movie-card p {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 15px;
+        input[type="text"] {
+            padding: 12px;
+            width: 65%;
+            border-radius: 8px;
+            border: 2px solidrgb(165, 207, 65);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
-
-        .footer {
-            background-color: #333;
+        input[type="text"]:focus {
+            border-color:rgb(24, 189, 134);
+        }
+        button {
+            padding: 12px 18px;
+            background-color: #ff4d6d;
             color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-
-        /* Mobile responsiveness */
-        @media screen and (max-width: 768px) {
-            .search-container input {
-                width: 70%;
-            }
-
-            .recommendations {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .movie-card {
-                width: 100%;
-                max-width: 350px;
-            }
+        button:hover {
+            background-color: #e03a58;
+        }
+        h1 {
+            color: #ff4d6d;
+            font-size: 28px;
+        }
+        h3 {
+            margin-top: 20px;
+            color: #444;
+        }
+        p {
+            color: #666;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>🎬 Movie Recommendations</h1>
 
-    <header>
-        <h1>Movie Recommendations</h1>
-        <p>Discover new movies based on your preferences!</p>
-    </header>
+        <!-- Search Form -->
+        <form class="search-box" action="{% url 'recommand' %}" method="GET">
+            <input type="text" name="movie" placeholder="Enter a movie name..." required>
+            <button type="submit">🔍 Search</button>
+        </form>
 
-    <div class="search-container">
-        <input type="text" id="movieSearch" placeholder="Search for a movie...">
-        <button onclick="searchMovies()">Search</button>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% else %}
+            <h2>You searched for: {{ user_movie.Title }}</h2>
+            <img src="{{ user_movie.Poster }}" alt="{{ user_movie.Title }}" width="200">
+            <p><strong>Genre:</strong> {{ user_movie.Genre }}</p>
+            <p><strong>Director:</strong> {{ user_movie.Director }}</p>
+            <p><strong>Language:</strong> {{ user_movie.Language }}</p>
+            <p><strong>IMDB Rating:</strong> {{ user_movie.Rating }}</p>
+
+            <h3>Similar Movies</h3>
+            {% if recommendations %}
+                {% for movie in recommendations %}
+                    <div class="movie-card">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                        <p><strong>{{ movie.Title }}</strong></p>
+                        <p>Genre: {{ movie.Genre }}</p>
+                        <p>IMDB Rating: {{ movie.Rating }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No similar movies found.</p>
+            {% endif %}
+        {% endif %}
     </div>
-
-    <div class="recommendations" id="movieRecommendations">
-        <!-- Recommended movies will be displayed here -->
-    </div>
-
-    <div class="footer">
-        <p>&copy; 2025 Movie Recommender. All rights reserved.</p>
-    </div>
-
-    <script>
-        // Movie data (just for demonstration)
-        const movies = [
-            {
-                title: "Inception",
-                image: "https://image.tmdb.org/t/p/w500/8dlfN4IV7oe5HDP1zK5kK1j5bs5.jpg",
-                description: "A mind-bending thriller where a thief steals secrets through dream manipulation."
-            },
-            {
-                title: "The Matrix",
-                image: "https://image.tmdb.org/t/p/w500/hVRAhzbfP9hvlz6YPFVRKgkLMW4.jpg",
-                description: "A hacker learns that the world he lives in is a simulated reality."
-            },
-            {
-                title: "The Dark Knight",
-                image: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-                description: "Batman faces off against the Joker in this iconic superhero film."
-            },
-            {
-                title: "Interstellar",
-                image: "https://image.tmdb.org/t/p/w500/xFjiEjlEy0nAob0gnxcswnswc4T.jpg",
-                description: "A group of explorers venture through a wormhole to save humanity."
-            }
-        ];
-
-        // Function to display movie recommendations
-        function displayMovies(filteredMovies) {
-            const recommendationsDiv = document.getElementById("movieRecommendations");
-            recommendationsDiv.innerHTML = ""; // Clear previous results
-
-            filteredMovies.forEach(movie => {
-                const movieCard = document.createElement("div");
-                movieCard.className = "movie-card";
-
-                const movieImage = document.createElement("img");
-                movieImage.src = movie.image;
-                movieCard.appendChild(movieImage);
-
-                const movieTitle = document.createElement("h3");
-                movieTitle.textContent = movie.title;
-                movieCard.appendChild(movieTitle);
-
-                const movieDescription = document.createElement("p");
-                movieDescription.textContent = movie.description;
-                movieCard.appendChild(movieDescription);
-
-                recommendationsDiv.appendChild(movieCard);
-            });
-        }
-
-        // Search function
-        function searchMovies() {
-            const searchInput = document.getElementById("movieSearch").value.toLowerCase();
-            const filteredMovies = movies.filter(movie =>
-                movie.title.toLowerCase().includes(searchInput)
-            );
-            displayMovies(filteredMovies);
-        }
-
-        // Display all movies initially
-        displayMovies(movies);
-    </script>
 </body>
 </html>
-
